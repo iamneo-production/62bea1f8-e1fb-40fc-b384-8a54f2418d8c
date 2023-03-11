@@ -11,5 +11,19 @@ export default function App(){
     <Route path="/update" element={<UpdateProfileforUser />} />
   </Routes>
   </BrowserRouter>
+  
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle";
+
+export default function App(){
+  return (
+    <>
+  <BrowserRouter>
+  <Routes>
+    <Route path="/home" element={<Home />} />
+    <Route path="/update" element={<UpdateProfileforUser />} />
+  </Routes>
+  </BrowserRouter>
+  </>
   );
 }
