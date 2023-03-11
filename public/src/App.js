@@ -6,7 +6,6 @@ import UpdateProfileforTechLead from "./pages/UpdateProfileforTechLead";
 import LeadersDirectory from "./pages/LeadersDirectory";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Chat from "./pages/Chat";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
 
@@ -19,7 +18,6 @@ export default function App(){
     <Route path="/login" element={<Login />} />
     <Route path="/register" element={<Register />} />
     <Route path="/update" element={<UpdateProfileforUser />} />
-    <Route path="/chat" element={<Chat />} />
     <Route path="/directory" element={<LeadersDirectory />} />
     <Route path="/updateTech" element={<UpdateProfileforTechLead />} />
   </Routes>
