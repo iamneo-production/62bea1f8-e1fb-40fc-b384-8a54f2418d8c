@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 
 function Profile(props) {
   const [follow, setFollow] = useState(true);
-  const [profileDetails, setProfileDetails] = useState([]);
+  const [profileDetails, setProfileDetails] = useState({});
   const [skills, setSkills] = useState([]);
   const [education, setEducation] = useState([]);
   const [experiences, setExperiences] = useState([
@@ -85,16 +85,22 @@ function Profile(props) {
     <div className="style2">
       <div className="style container overflowAuto py-5">
         {/* <div className="row">
-      <div className="col">
-        <nav  className="bg-light rounded-3 p-3 mb-4">
-          <ol className="breadcrumb mb-0">
-            <li className="breadcrumb-item"><a href="#">Home</a></li>
-            <li className="breadcrumb-item"><a href="#">User</a></li>
-            <li className="breadcrumb-item active" aria-current="page">User Profile</li>
-          </ol>
-        </nav>
-      </div>
-    </div> */}
+          <div className="col">
+            <nav className="bg-light rounded-3 p-3 mb-4">
+              <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item">
+                  <a href="#">Home</a>
+                </li>
+                <li className="breadcrumb-item">
+                  <a href="#">User</a>
+                </li>
+                <li className="breadcrumb-item active" aria-current="page">
+                  User Profile
+                </li>
+              </ol>
+            </nav>
+          </div>
+        </div> */}
 
         <div className="row">
           <div className="col-lg-4">
@@ -211,9 +217,9 @@ function Profile(props) {
             </div>
             <div className="card shadow mb-4">
               <div className="card-body">
-                <h5>About </h5>
+                <h5>Bio </h5>
                 <hr />
-                <p>{profileDetails.about}</p>
+                <p>{profileDetails.bio}</p>
               </div>
             </div>
             <div className="card shadow mb-4">
