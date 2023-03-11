@@ -22,35 +22,36 @@ function Profile(props) {
   const { user, techleadId } = useParams();
   console.log(techleadId);
   useEffect(() => {
+    const app_url = "https://8080-eedbecaadafcdfcfbacaaadacabcdebacdacedf.project.examly.io";
     axios
-      .get(`http://localhost:8080/profile/techlead/${techleadId}`)
+      .get(`${app_url}/profile/techlead/${techleadId}`)
       .then((response) => {
         console.log(response.data[0]);
         setProfileDetails(response.data[0]);
       });
 
     axios
-      .get(`http://localhost:8080/profile/skills/${techleadId}`)
+      .get(`${app_url}/profile/skills/${techleadId}`)
       .then((response) => {
         console.log(response.data);
         setSkills(response.data);
       });
     axios
-      .get(`http://localhost:8080/profile/education/${techleadId}`)
+      .get(`${app_url}/profile/education/${techleadId}`)
       .then((response) => {
         console.log(response.data);
         setEducation(response.data);
       });
 
     axios
-      .get(`http://localhost:8080/profile/experiences/${techleadId}`)
+      .get(`${app_url}/profile/experiences/${techleadId}`)
       .then((response) => {
         console.log(response.data);
         setExperiences(response.data);
       });
 
     axios
-      .get(`http://localhost:8080/profile/follow/${user}/${techleadId}`)
+      .get(`${app_url}/profile/follow/${user}/${techleadId}`)
       .then((response) => {
         console.log(response.data.length);
         if (response.data.length !== 0) {

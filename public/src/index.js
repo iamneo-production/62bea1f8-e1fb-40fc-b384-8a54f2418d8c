@@ -1,21 +1,12 @@
-gitconst express = require("express");
-const cors = require("cors");
-const app = express();
-require("dotenv").config();
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
 
-// Create connection
-app.use(cors());
-app.use(express.json());
-const port = 8080;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
 
-const server = app.listen(port,()=>{
-    console.log("Server Started on Port 8080")
-});
-
-
-const userController = require("./controllers/usersController");
-app.use(express.json());
-
-//routes for different sqls
-app.get('/users',userController.getUsers);
-app.get('/user_skill',userController.getUserSkill);
