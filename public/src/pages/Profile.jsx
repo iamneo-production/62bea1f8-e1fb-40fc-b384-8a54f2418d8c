@@ -116,7 +116,7 @@ function Profile(props) {
                 <h5 className="my-3">
                   {profileDetails.firstName + " " + profileDetails.lastName}
                 </h5>
-                <p className="text-muted mb-1">{experiences[0].role}</p>
+                {/* <p className="text-muted mb-1">{experiences[0].role}</p> */}
                 <p className="text-muted mb-4">{profileDetails.country}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <button
@@ -140,7 +140,7 @@ function Profile(props) {
                 <ul className="list-group list-group-flush rounded-3">
                   <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                     <BsFillBuildingsFill />
-                    <p className="mb-0">{experiences[0].companyName}</p>
+                    {/* <p className="mb-0">{experiences[0].companyName}</p> */}
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                     <FaIndustry />
