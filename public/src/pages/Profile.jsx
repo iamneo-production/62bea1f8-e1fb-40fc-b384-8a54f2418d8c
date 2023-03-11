@@ -5,12 +5,32 @@ import "bootstrap/dist/css/bootstrap.css";
 import axios from "axios";
 import { FaIndustry } from "react-icons/fa";
 import { BsFillBuildingsFill } from "react-icons/bs";
+import { AiTwotoneStar, AiOutlineStar } from "react-icons/ai";
 import "./profile.css";
 import Footer from "../components/Pawandi/Footer.jsx";
+import { useParams } from "react-router-dom";
 
-function Home() {
+function Profile(props) {
   const [follow, setFollow] = useState(true);
-  useEffect(() => {}, []);
+  const [profileDetails, setProfileDetails] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const { username } = useParams();
+  console.log(username);
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/profile/techlead/${username}`)
+      .then((response) => {
+        console.log(response.data[0]);
+        setProfileDetails(response.data[0]);
+      });
+
+    axios
+      .get(`http://localhost:8080/profile/skills/${username}`)
+      .then((response) => {
+        console.log(response.data);
+        setSkills(response.data);
+      });
+  }, []);
 
   const handleFollow = () => {
     setFollow(!follow);
@@ -35,14 +55,16 @@ function Home() {
             <div className="card shadow mb-4">
               <div className="card-body text-center">
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                  alt="avatar"
+                  src={profileDetails.profilePicture}
+                  alt="profile"
                   className="rounded-circle img-fluid"
                   style={{ width: 150 }}
                 />
-                <h5 className="my-3">Diana</h5>
+                <h5 className="my-3">
+                  {profileDetails.firstName + " " + profileDetails.lastName}
+                </h5>
                 <p className="text-muted mb-1">Full Stack Developer</p>
-                <p className="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                <p className="text-muted mb-4">{profileDetails.country}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <button
                     type="button"
@@ -79,38 +101,31 @@ function Home() {
               <div className="card-body">
                 <h5>Skills </h5>
                 <hr />
-                <div className="list-group">
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Cras justo odio
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Dapibus ac facilisis in
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Morbi leo risus
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Porta ac consectetur ac
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action disabled"
-                  >
-                    Vestibulum at eros
-                  </a>
-                </div>
+                {skills.map((skill) => {
+                  let stars = [];
+
+                  for (let i = 0; i < skill.rate; i++) {
+                    stars.push(<AiTwotoneStar />);
+                  }
+                  for (let i = 0; i < 5 - skill.rate; i++) {
+                    stars.push(<AiOutlineStar />);
+                  }
+
+                  return (
+                    <div className="row">
+                      <div className="col-6">
+                        <a
+                          href="#"
+                          className="list-group-item list-group-item-action"
+                        >
+                          {skill.name}
+                        </a>
+                      </div>
+                      <div className="col-6 mb-2">{stars}</div>
+                      <hr />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -122,7 +137,10 @@ function Home() {
                     <p className="mb-0">Full Name</p>
                   </div>
                   <div className="col-sm-9">
-                    <p className="text-muted mb-0">Diana</p>
+                    <p className="text-muted mb-0">
+                      {" "}
+                      {profileDetails.firstName + " " + profileDetails.lastName}
+                    </p>
                   </div>
                 </div>
                 <hr />
@@ -131,7 +149,7 @@ function Home() {
                     <p className="mb-0">Email</p>
                   </div>
                   <div className="col-sm-9">
-                    <p className="text-muted mb-0">example@example.com</p>
+                    <p className="text-muted mb-0">{profileDetails.email}</p>
                   </div>
                 </div>
                 <hr />
@@ -140,9 +158,7 @@ function Home() {
                     <p className="mb-0">Location</p>
                   </div>
                   <div className="col-sm-9">
-                    <p className="text-muted mb-0">
-                      Bay Area, San Francisco, CA
-                    </p>
+                    <p className="text-muted mb-0">{profileDetails.country}</p>
                   </div>
                 </div>
               </div>
@@ -207,7 +223,7 @@ function Home() {
                 <hr />
                 <div className="list-group">
                   <a
-                    href="https://www.linkedin.com/in/nithursika-kalanantharasan-6a4640245/"
+                    href="#"
                     className="list-group-item list-group-item-action"
                   >
                     Cras justo odio
@@ -411,4 +427,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Profile;
