@@ -1,72 +1,165 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+//import Logo from "../../src/assets/logo-background.png";
 
-import './UserProfile.css';
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: #0C3640;
+`;
 
-function UserProfile(props) {
-  const [name, setName] = useState(props.name);
-  const [email, setEmail] = useState(props.email);
-  const [bio, setBio] = useState(props.bio);
+const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 10px 0 10px;
+`;
 
-  const handleUpdate = () => {
-    axios.put(`/users/${props.id}`, { name, email, bio })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+
+const HeaderText = styled.h1`
+  color: #8BD9D9;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #185359;
+  border-radius: 20px;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  width: 100%;
+`;
+
+const Label = styled.label`
+  color: #8BD9D9;
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const Input = styled.input`
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #2B838C;
+  color: white;
+  width: 100%;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #60BFBF;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #2B838C;
+  }
+`;
+
+const ErrorMessage = styled.span`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+`;
+
+const NavigationBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+`;
+
+const NavigationLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  margin-right: 20px;
+`;
+
+const UpdateUserProfile = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+    } else {
+      // handle form submission here
+      console.log('Form submitted!');
+    }
   };
 
   return (
-    <>
-      <h1>User Profile</h1>
-      <form>
-        <label htmlFor="name">Name:</label>
-        <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} />
-
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
-
-        <label htmlFor="bio">Bio:</label>
-        <textarea id="bio" value={bio} onChange={e => setBio(e.target.value)} />
-
-        <button type="button" onClick={handleUpdate}>Update</button>
-      </form>
-    </>
-  );
-}
-export default UserProfile;
-
-
-export function TechLeaderProfile(props) {
-  const [name, setName] = useState(props.name);
-  const [email, setEmail] = useState(props.email);
-  const [bio, setBio] = useState(props.bio);
-
-  const handleUpdate = () => {
-    axios.put(`/tech_leaders/${props.id}`, { name, email, bio })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
-
-  return (
-    <div>
-      <label>Name:</label>
-      <input type="text" value={name} onChange={e => setName(e.target.value)} />
-      <br />
-      <label>Email:</label>
-      <input type="email" value={email} onChange={e => setEmail(e.target.value)} />
-      <br />
-      <label>Bio:</label>
-      <textarea value={bio} onChange={e => setBio(e.target.value)} />
-      <br />
-      <button onClick={handleUpdate}>Update</button>
-    </div>
-  );
-}
-
+    <Container>
+      <HeaderContainer>
+        <HeaderText>Update User Profile</HeaderText>
+      </HeaderContainer>
+      
+      <NavigationBar>
+        <NavigationLink to="/">Home</NavigationLink>
+        <NavigationLink to="/dashboard">Dashboard</NavigationLink>
+      </NavigationBar>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Label htmlFor="username">Username</Label>
+          <Input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="password">Password</Label>
+          <Input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label htmlFor="confirm-password">Confirm Password</Label>
+            <Input
+            type="password"
+            id="confirm-password"
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            required
+            />
+            </FormGroup>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <SubmitButton type="submit">Update Profile</SubmitButton>
+            </Form>
+            </Container>
+            );
+            };
+            
+            export default UpdateUserProfile;

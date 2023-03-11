@@ -6,7 +6,7 @@ function Myfooter(){
   return(
     <>
 <Footer>
-<footer Style="background-color: #195359;">
+<footer Style="background-color: #185359;">
     <div class="container p-4">
       <div class="row">
         <div class="col-lg-6 col-md-12 mb-4">

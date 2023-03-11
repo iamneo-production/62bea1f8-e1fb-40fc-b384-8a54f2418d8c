@@ -4,23 +4,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 
-const mysql = require("mysql");
-
-const pool = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "examly",
-  database: "herimpact",
-});
-pool.getConnection((error, connection) => {
-  if (error) {
-    console.error("Error connecting to database:", error);
-    return;
-  }
-  console.log("Connected to MySQL database!");
-  connection.release();
-});
-
+// Create connection
 app.use(cors());
 app.use(express.json());
 app.use("/profile", profile);
@@ -31,3 +15,11 @@ const server = app.listen(port, () => {
 });
 
 module.exports = pool;
+
+const userController = require("./controllers/usersController");
+app.use(express.json());
+
+//routes for different sqls
+app.get('/users',userController.getUsers);
+app.get('/user_skill',userController.getUserSkill);
+
