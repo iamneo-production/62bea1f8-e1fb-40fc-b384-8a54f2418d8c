@@ -14,7 +14,7 @@ const server = app.listen(port, () => {
   console.log("Server Started on Port 8080");
 });
 
-module.exports = pool;
+
 
 const userController = require("./controllers/usersController");
 app.use(express.json());
