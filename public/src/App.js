@@ -2,6 +2,7 @@ import React from "react";
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import Home from "./pages/Home";
 import UpdateProfileforUser from "./pages/UpdateProfileforUser";
+import UpdateProfileforTechLead from "./pages/UpdateProfileforTechLead";
 import LeadersDirectory from "./pages/LeadersDirectory";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle";
