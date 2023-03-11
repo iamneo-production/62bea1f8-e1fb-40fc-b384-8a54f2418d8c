@@ -6,6 +6,7 @@ import axios from "axios";
 import { FaIndustry } from "react-icons/fa";
 import { BsFillBuildingsFill } from "react-icons/bs";
 import { AiTwotoneStar, AiOutlineStar } from "react-icons/ai";
+import { GoPrimitiveDot } from "react-icons/go";
 import "./profile.css";
 import Footer from "../components/Pawandi/Footer.jsx";
 import { useParams } from "react-router-dom";
@@ -14,26 +15,71 @@ function Profile(props) {
   const [follow, setFollow] = useState(true);
   const [profileDetails, setProfileDetails] = useState([]);
   const [skills, setSkills] = useState([]);
-  const { username } = useParams();
-  console.log(username);
+  const [education, setEducation] = useState([]);
+  const [experiences, setExperiences] = useState([
+    { role: "", companyName: "" },
+  ]);
+  const { user, techleadId } = useParams();
+  console.log(techleadId);
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/profile/techlead/${username}`)
+      .get(`http://localhost:8080/profile/techlead/${techleadId}`)
       .then((response) => {
         console.log(response.data[0]);
         setProfileDetails(response.data[0]);
       });
 
     axios
-      .get(`http://localhost:8080/profile/skills/${username}`)
+      .get(`http://localhost:8080/profile/skills/${techleadId}`)
       .then((response) => {
         console.log(response.data);
         setSkills(response.data);
       });
+    axios
+      .get(`http://localhost:8080/profile/education/${techleadId}`)
+      .then((response) => {
+        console.log(response.data);
+        setEducation(response.data);
+      });
+
+    axios
+      .get(`http://localhost:8080/profile/experiences/${techleadId}`)
+      .then((response) => {
+        console.log(response.data);
+        setExperiences(response.data);
+      });
+
+    axios
+      .get(`http://localhost:8080/profile/follow/${user}/${techleadId}`)
+      .then((response) => {
+        console.log(response.data.length);
+        if (response.data.length !== 0) {
+          setFollow(false);
+        }
+      });
   }, []);
 
   const handleFollow = () => {
-    setFollow(!follow);
+    if (follow) {
+      axios
+        .post(`http://localhost:8080/profile/follow`, {
+          user: user,
+          techlead: techleadId,
+        })
+        .then((response) => {
+          setFollow(!follow);
+        });
+    } else {
+      axios
+        .post(`http://localhost:8080/profile/unfollow`, {
+          user: user,
+          techlead: techleadId,
+        })
+        .then((response) => {
+          console.log(response);
+          setFollow(!follow);
+        });
+    }
   };
   return (
     <div className="style2">
@@ -63,7 +109,7 @@ function Profile(props) {
                 <h5 className="my-3">
                   {profileDetails.firstName + " " + profileDetails.lastName}
                 </h5>
-                <p className="text-muted mb-1">Full Stack Developer</p>
+                <p className="text-muted mb-1">{experiences[0].role}</p>
                 <p className="text-muted mb-4">{profileDetails.country}</p>
                 <div className="d-flex justify-content-center mb-2">
                   <button
@@ -87,7 +133,7 @@ function Profile(props) {
                 <ul className="list-group list-group-flush rounded-3">
                   <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                     <BsFillBuildingsFill />
-                    <p className="mb-0">WSO2</p>
+                    <p className="mb-0">{experiences[0].companyName}</p>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center p-3">
                     <FaIndustry />
@@ -105,10 +151,10 @@ function Profile(props) {
                   let stars = [];
 
                   for (let i = 0; i < skill.rate; i++) {
-                    stars.push(<AiTwotoneStar />);
+                    stars.push(<AiTwotoneStar id={i} />);
                   }
                   for (let i = 0; i < 5 - skill.rate; i++) {
-                    stars.push(<AiOutlineStar />);
+                    stars.push(<AiOutlineStar id={5 - i} />);
                   }
 
                   return (
@@ -165,94 +211,61 @@ function Profile(props) {
             </div>
             <div className="card shadow mb-4">
               <div className="card-body">
-                <h5>BIO </h5>
+                <h5>About </h5>
                 <hr />
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.{" "}
-                </p>
+                <p>{profileDetails.about}</p>
               </div>
             </div>
             <div className="card shadow mb-4">
               <div className="card-body">
-                <h5>Experience </h5>
+                <h5>Education </h5>
                 <hr />
-                <div className="list-group">
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Cras justo odio
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Dapibus ac facilisis in
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Morbi leo risus
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Porta ac consectetur ac
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action disabled"
-                  >
-                    Vestibulum at eros
-                  </a>
-                </div>
+                {education.map((edu) => {
+                  return (
+                    <>
+                      <li className="list-group-item d-flex justify-content-between align-items-start">
+                        <GoPrimitiveDot className="mt-2" />
+
+                        <div className="ms-2 me-auto">
+                          <div className="fw-bold">{edu.instituteName}</div>
+                          <div>{edu.qualificationName}</div>
+                          <div className="fw-lighter">
+                            {edu.start + " - " + edu.end}
+                          </div>
+                        </div>
+                      </li>
+                      <hr />
+                    </>
+                  );
+                })}
               </div>
             </div>
 
             <div className="card shadow mb-4">
               <div className="card-body">
-                <h5>Education </h5>
+                <h5>Experiences </h5>
                 <hr />
-                <div className="list-group">
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Cras justo odio
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Dapibus ac facilisis in
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Morbi leo risus
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action"
-                  >
-                    Porta ac consectetur ac
-                  </a>
-                  <a
-                    href="#"
-                    className="list-group-item list-group-item-action disabled"
-                  >
-                    Vestibulum at eros
-                  </a>
-                </div>
+                {experiences.map((exp) => {
+                  return (
+                    <>
+                      <li className="list-group-item d-flex justify-content-between align-items-start">
+                        <GoPrimitiveDot className="mt-2" />
+
+                        <div className="ms-2 me-auto">
+                          <div className="fw-bold">{exp.companyName}</div>
+                          <div>{exp.role}</div>
+                          <div className="fw-lighter">
+                            {exp.end
+                              ? exp.start + " - " + exp.end
+                              : exp.start + " - current"}
+                          </div>
+                          <div className="fw-lighter">{exp.country}</div>
+                        </div>
+                      </li>
+                      <hr />
+                    </>
+                  );
+                })}
               </div>
             </div>
 
