@@ -16,7 +16,7 @@ export default function App(){
     <Route path="/update" element={<UpdateProfileforUser />} />
     <Route path="/directory" element={<LeadersDirectory />} />
     <Route path="/updateTech" element={<UpdateProfileforTechLead />} />
-    <Route path="/profile/:user/:techleadId" element={<UpdateProfileforTechLead />} />
+    <Route path="/profile/:user/:techleadId" element={<Profile />} />
   </Routes>
   </BrowserRouter>
   </>
